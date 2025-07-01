@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+.split {
+    display: flex;
+    flex-direction: row;
+}
+
+.gutter {
+    background-color: none;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.gutter:hover{
+  background-color: #562ee786;
+}
+
+.gutter.gutter-horizontal{
+    cursor: col-resize;
+}
+
+.gutter.gutter-vertical{
+  cursor: row-resize;
+}
