@@ -22,3 +22,21 @@
 .gutter.gutter-vertical{
   cursor: row-resize;
 }
+
+/* For WebKit browsers */
+::-webkit-scrollbar {
+  width: 8px; /* Adjust width as desired */
+}
+
+::-webkit-scrollbar-track {
+  background: none; /* Light grey background */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Darker grey for the thumb */
+  border-radius: 4px; /* Rounded corners */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Slightly darker on hover */
+}
