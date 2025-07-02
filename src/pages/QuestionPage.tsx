@@ -12,9 +12,13 @@ import Question from '../components/Question'
 import axiosInstance,{axiosPrivate} from '../api/axiosInstance'
 import { useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import LoadingCircleSpinner from '../components/LoadingCircleSpinner'
+import ResultCards from '../components/ResultCards'
+import { IoReload } from "react-icons/io5";
 
 const QuestionPage = () => {
   const {id} = useParams()
+  const [isLoading, setIsLoading] = useState(true)
   const [question,setQuestion] = useState<{
     _id: string;
     title: string;
@@ -73,6 +77,7 @@ const QuestionPage = () => {
   useEffect( () => {
     const getValues = async() => {
       let response = await axiosPrivate.get(`/question/${id}`)
+      setIsLoading(false)
       if(response.status === 200)
       setQuestion(response.data.question)
       else
@@ -97,12 +102,16 @@ const QuestionPage = () => {
   const [language, setLanguage] = useState('python')
   const [code, setCode] = useState(languageSamples[language])
   const [dropdown, setDropdown] = useState(false)
+  const [isRunning, setIsRunning] = useState(false)
+  const [results, setResults] = useState<{input: string,expected: string, stdout:string, status: string, passed:boolean}[] | null>(null)
 
   const handleEditorDidMount = (editor: monaco.editor.IStandaloneCodeEditor) => {
     editorRef.current = editor
   }
 
   const runCode = async() => {
+    try{
+    setIsRunning(true)
     const value = editorRef.current?.getValue();
     const response = await axiosPrivate.post('/run', {
       language : language.toLowerCase(),
@@ -110,14 +119,41 @@ const QuestionPage = () => {
       input : stdin,
       questionID : id
     })
+    setIsRunning(false)
     if(response.status == 200)
       setStdout(response.data.results.stdout)
     else
       toast.error(response.data.message)
+  }catch(err : any){
+    console.error(err)
+    toast.error(err?.response?.data?.message || err)
+    setIsRunning(false)
+  }
+  };
+
+  const submitCode = async() => {
+    try{
+    setIsRunning(true)
+    const value = editorRef.current?.getValue();
+    const response = await axiosPrivate.post('/submit', {
+      language : language.toLowerCase(),
+      code : value,
+      questionID : id
+    })
+    setIsRunning(false)
+    if(response.status == 200)
+      setResults(response.data.results)
+    else
+      toast(response.data.message)
+  }catch(err : any){
+    console.error(err)
+    toast.error(err?.response?.data?.message || err)
+    setIsRunning(false)
+  }
   };
 
   return (
-    !question ? <div className='text-purple-600 font-bold text-xl'>Question Not Found</div> :
+    isLoading ? <div className='border-[#4a3aff4f] border rounded-lg p-2 flex items-center justify-center'><LoadingCircleSpinner/></div> : !question ? <div className='text-purple-600 font-bold text-xl'>Question Not Found</div> :
     <div className='flex flex-col h-screen'>
       <nav className='text-white mx-4 my-2 flex justify-between items-center'>
         <Link to='/'><img src={logo} alt="" /></Link>
@@ -169,15 +205,22 @@ const QuestionPage = () => {
               />
             </div>
           </div>
+          {isRunning ? <div className='border-[#4a3aff4f] border rounded-lg p-2 flex items-center justify-center'><LoadingCircleSpinner/></div> :
+          !results ? 
           <div className='border-[#4a3aff4f] border rounded-lg p-2 text-white'>
             <div className='flex gap-2 mx-4 my-2'>
               <button className='flex items-center gap-4 py-2 px-6 rounded bg-[#4a3aff] cursor-pointer hover:bg-[#4a3aff98]' onClick={() => runCode()}>Run <FaPlay/></button>
-              <button className='flex items-center gap-4 py-2 px-4 rounded bg-[#4a3aff] cursor-pointer hover:bg-[#4a3aff98]'>Submit <MdCloudUpload/></button>
+              <button className='flex items-center gap-4 py-2 px-4 rounded bg-[#4a3aff] cursor-pointer hover:bg-[#4a3aff98]' onClick={() => submitCode()}>Submit <MdCloudUpload/></button>
             </div>
             <div className='mt-8 mx-4'>
               <IOFields stdin={stdin} setStdin={setStdin} stdout={stdout}/>
             </div>
-          </div>
+          </div> : 
+           <div className='border-[#4a3aff4f] border rounded-lg p-4 max-h-full'>
+              <button className='flex items-center gap-4 py-2 px-6 rounded bg-[#4a3aff] cursor-pointer hover:bg-[#4a3aff98] text-white mb-2' onClick={() => setResults(null)}>Reattempt <IoReload/></button>
+              <ResultCards results={results}/>
+            </div>
+          }
         </Split>
       </Split>
     </div>
