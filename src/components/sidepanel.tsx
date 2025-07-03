@@ -61,13 +61,11 @@ const filteredQuestions = allQuestions.filter((q) =>
               value={searchText}
               onChange={(e)=>{setSearchText(e.target.value)}}
               placeholder="Search Question"
-              className="w-full pl-10 pr-4 py-4 rounded-[7.79px] border-none text-[#FFFFFF80] placeholder-[#FFFFFF80] bg-[rgba(116,128,255,0.2)] hover:bg-[rgba(116,128,255,0.8)]"
+              className="w-full pl-10 pr-4 py-2 rounded-[7.79px] border-none text-[#FFFFFF80] placeholder-[#FFFFFF80] bg-[rgba(116,128,255,0.2)] hover:bg-[rgba(116,128,255,0.8)]"
             />
           </div>
-
-          {/* Question List */}
           <div className="flex flex-col gap-[12px] w-full max-h-[75vh] overflow-y-scroll"  style={{scrollbarWidth: 'none'}}>
-            {questionsDiv}
+            {allQuestions ? questionsDiv : `No questions found\n Generate some by searching!`}
           </div>
         </div>
       </div>

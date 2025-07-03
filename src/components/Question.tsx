@@ -1,4 +1,3 @@
-import { div } from "motion/react-client";
 import Hints from "./hints";
 
 type QuestionProps = {
@@ -95,8 +94,8 @@ const Question = ({activeTab,question,submissions} : QuestionProps) => {
             </div>
           )}
           {activeTab === 'submissions' && (
-            <div className='flex flex-col gap-4'> 
-              { !submissions ? <div>No Submissions Yet</div> : submissions.map((sub) => {
+            <div className='flex flex-col gap-4'>
+              {submissions && submissions.map((sub) => {
                 const firstFailed = sub.testResults.find(t => !t.passed);
                 return (
                   <div

@@ -1,7 +1,6 @@
 import { motion } from "framer-motion"
 import { useState } from "react";
 import toast from "react-hot-toast";
-import axios from "axios";
 import axiosInstance from "../api/axiosInstance";
 
 type LoginModalProps = {
@@ -22,9 +21,9 @@ const LoginModal = ({setLogin,setSignUp,setLogged} : LoginModalProps) => {
         })
         if(response.status==200){
           toast.success(response.data.message)
-          localStorage.setItem('accessToken', response.data.accessToken)
-          setLogged(true)
+          await localStorage.setItem('accessToken', response.data.accessToken)
           setLogin(false)
+          setLogged(true)
         }
       }catch(err:any){
         console.error(err)

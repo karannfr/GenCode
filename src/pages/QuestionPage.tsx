@@ -19,6 +19,7 @@ import { IoReload } from "react-icons/io5";
 const QuestionPage = () => {
   const {id} = useParams()
   const [isLoading, setIsLoading] = useState(true)
+  const [isRunning, setIsRunning] = useState(false)
   const [question,setQuestion] = useState<{
     _id: string;
     title: string;
@@ -76,18 +77,34 @@ const QuestionPage = () => {
   },[])
   useEffect( () => {
     const getValues = async() => {
-      let response = await axiosPrivate.get(`/question/${id}`)
-      setIsLoading(false)
-      if(response.status === 200)
-      setQuestion(response.data.question)
-      else
-        return 
-      response = await axiosPrivate.get(`/submit/${id}`)
-      if(response.status === 200)
-        setSubmissions(response.data.submissions)
+      try{
+        let response = await axiosPrivate.get(`/question/${id}`)
+        setIsLoading(false)
+        if(response.status === 200)
+          setQuestion(response.data.question)
+        else
+          toast.error(response.data.message)
+      }catch(err: any){
+        toast.error(err.response.data.message)
+      }
     }
     getValues()
   },[])
+    useEffect( () => {
+    const getValues = async() => {
+      try{
+      const response = await axiosPrivate.get(`/submit/${id}`)
+      if(response.status === 200)
+        setSubmissions(response.data.submissions)
+      else
+          toast.error(response.data.message)
+      }catch(err: any){
+        toast.error(err.response.data.message)
+      }
+    }
+    getValues()
+  },[isRunning])
+
   const [stdin, setStdin] = useState("");
   const [stdout, setStdout] = useState("Output will appear here...");
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
@@ -102,7 +119,6 @@ const QuestionPage = () => {
   const [language, setLanguage] = useState('python')
   const [code, setCode] = useState(languageSamples[language])
   const [dropdown, setDropdown] = useState(false)
-  const [isRunning, setIsRunning] = useState(false)
   const [results, setResults] = useState<{input: string,expected: string, stdout:string, status: string, passed:boolean}[] | null>(null)
 
   const handleEditorDidMount = (editor: monaco.editor.IStandaloneCodeEditor) => {
@@ -121,7 +137,7 @@ const QuestionPage = () => {
     })
     setIsRunning(false)
     if(response.status == 200)
-      setStdout(response.data.results.stdout)
+      response.data.results.stdout ? setStdout(response.data.results.stdout) : setStdout(response.data.results.status)
     else
       toast.error(response.data.message)
   }catch(err : any){
@@ -216,7 +232,7 @@ const QuestionPage = () => {
               <IOFields stdin={stdin} setStdin={setStdin} stdout={stdout}/>
             </div>
           </div> : 
-           <div className='border-[#4a3aff4f] border rounded-lg p-4 max-h-full'>
+           <div className='border-[#4a3aff4f] border rounded-lg p-4 overflow-auto'>
               <button className='flex items-center gap-4 py-2 px-6 rounded bg-[#4a3aff] cursor-pointer hover:bg-[#4a3aff98] text-white mb-2' onClick={() => setResults(null)}>Reattempt <IoReload/></button>
               <ResultCards results={results}/>
             </div>

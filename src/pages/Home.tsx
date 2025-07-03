@@ -48,44 +48,44 @@ const Home = ({ logged, setLogged }: HomeProps) => {
   return (
     <>
     {/* Inside your return block */}
-<div className="w-screen h-screen overflow-hidden">
-  <div
-    className={`h-full w-full p-6 ${
-      logged
-        ? "flex flex-row gap-[13px]"
-        : "flex flex-col justify-between items-center"
-    }`}
-  >
-    {/* Side Panel only when logged in */}
-    {logged && (
-      <div className="w-[20vw] h-full">
-        <SidePanel />
-      </div>
-    )}
+        <div className="w-screen h-screen overflow-hidden">
+          <div
+            className={`h-full w-full p-6 ${
+              logged
+                ? "flex flex-row gap-[13px]"
+                : "flex flex-col justify-between items-center"
+            }`}
+          >
+            {/* Side Panel only when logged in */}
+            {logged && (
+              <div className="w-[20vw] h-full">
+                <SidePanel />
+              </div>
+            )}
 
-    {/* Main Section */}
-    <div className="h-full w-full p-[1px] bg-gradient-to-br from-[#562EE7] via-[#8E56FF] to-[#FFC6E8] rounded-lg">
-      <div className="bg-[#010314] h-full w-full rounded-lg flex flex-col">
-        
-        {logged && (
-  <div className="w-full flex items-center justify-between px-6 pt-4">
-    {/* StatusBar on the left */}
-    <div className="max-w-[50%] w-full">
-      <StatusBar totalGenerated={5} totalSolved={10} />
-    </div>
+            {/* Main Section */}
+            <div className="h-full w-full p-[1px] bg-gradient-to-br from-[#562EE7] via-[#8E56FF] to-[#FFC6E8] rounded-lg">
+              <div className="bg-[#010314] h-full w-full rounded-lg flex flex-col">
+                
+                {logged && (
+          <div className="w-full flex items-center justify-between px-6 pt-4">
+            {/* StatusBar on the left */}
+            <div className="max-w-[50%] w-full">
+              <StatusBar totalGenerated={5} totalSolved={10} />
+            </div>
 
-    {/* Logout on the right */}
-    <button
-      className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg font-medium transition"
-      onClick={() => {
-        localStorage.removeItem("accessToken");
-        setLogged(false);
-      }}
-    >
-      Logout
-    </button>
-  </div>
-)}
+            {/* Logout on the right */}
+            <button
+              className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg font-medium transition"
+              onClick={() => {
+                localStorage.removeItem("accessToken");
+                setLogged(false);
+              }}
+            >
+              Logout
+            </button>
+          </div>
+        )}
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col justify-center items-center w-full relative">
@@ -163,18 +163,17 @@ const Home = ({ logged, setLogged }: HomeProps) => {
   </div>
 </div>
 
-{/* Modals */}
-{login && (
-  <LoginModal
-    setLogin={setLogin}
-    setSignUp={setSignUp}
-    setLogged={setLogged}
-  />
-)}
-{signup && <SignUpModal setLogin={setLogin} setSignUp={setSignUp} />}
-
-    </>
-  );
-};
+  {/* Modals */}
+  {login && (
+    <LoginModal
+      setLogin={setLogin}
+      setSignUp={setSignUp}
+      setLogged={setLogged}
+    />
+  )}
+  {signup && <SignUpModal setLogin={setLogin} setSignUp={setSignUp} />}
+      </>
+    );
+  };
 
 export default Home;
