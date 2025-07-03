@@ -9,7 +9,7 @@ import axiosInstance from "./api/axiosInstance"
 
 function App() {
   const [logged,setLogged] = useState(false)
-
+  
   useEffect(() => {
     const checkLogin = async() => {
       const response = await axiosInstance.get('/refresh')

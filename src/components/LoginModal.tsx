@@ -21,10 +21,10 @@ const LoginModal = ({setLogin,setSignUp,setLogged} : LoginModalProps) => {
           password
         })
         if(response.status==200){
-          setLogin(false)
-          setLogged(true)
           toast.success(response.data.message)
           localStorage.setItem('accessToken', response.data.accessToken)
+          setLogged(true)
+          setLogin(false)
         }
       }catch(err:any){
         console.error(err)
