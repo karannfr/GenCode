@@ -60,7 +60,7 @@ const filteredQuestions = allQuestions.filter((q) =>
               type="text"
               value={searchText}
               onChange={(e)=>{setSearchText(e.target.value)}}
-              placeholder="Search Question"
+              placeholder="Search Questions"
               className="w-full pl-10 pr-4 py-2 rounded-[7.79px] border-none text-[#FFFFFF80] placeholder-[#FFFFFF80] bg-[rgba(116,128,255,0.2)] hover:bg-[rgba(116,128,255,0.8)]"
             />
           </div>
