@@ -33,6 +33,7 @@ const IOFields = ({stdin,stdout,setStdin}: IOFieldsProps) => {
           }}
           className="w-full p-3 rounded-lg bg-white/5 backdrop-blur-md text-white border border-[#4a3aff4f] placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-[#4a3aff] transition-colors duration-300 overflow-hidden resize-none" 
         />
+        <div className="bg-red-500 mt-4">NOTE: Custom input is mandatory</div>
       </div>
 
        <div>
