@@ -13,26 +13,57 @@ const SignUpModal = ({ setLogin, setSignUp }: SignUpModalProps) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const isStrongPassword = (password: string) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^+=])[A-Za-z\d@$!%*?&#^+=]{8,}$/;
+    return regex.test(password);
+  };
+
+  const isValidEmail = (email: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      try {
-        const response = await axiosInstance.post("/register", {
-          username,
-          email,
-          password,
-        });
-        if (response.status === 201) {
-          toast.success(response.data.message);
-          setSignUp(false);
-          setLogin(true);
-        } else {
-          toast.error(response.data.message);
-        }
-      } catch (err: any) {
-        console.error(err);
-        toast.error(err?.response?.data?.message || "Something went wrong");
+    e.preventDefault();
+
+    // Basic required field validation
+    if (!username || !email || !password) {
+      toast.error("All fields are required.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    if (!isStrongPassword(password)) {
+      toast.error(
+        "Password must be at least 8 characters and include uppercase, lowercase, number, and special character."
+      );
+      return;
+    }
+
+    try {
+      const response = await axiosInstance.post("/register", {
+        username,
+        email,
+        password,
+      });
+
+      if (response.status === 201) {
+        toast.success(response.data.message);
+        setSignUp(false);
+        setLogin(true);
+      } else {
+        toast.error(response.data.message);
       }
-  }
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err?.response?.data?.message || "Something went wrong");
+    }
+  };
+
   return (
     <>
       <div

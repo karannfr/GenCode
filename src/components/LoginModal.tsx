@@ -12,24 +12,34 @@ type LoginModalProps = {
 const LoginModal = ({setLogin,setSignUp,setLogged} : LoginModalProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      try{
-        const response = await axiosInstance.post('/login', {
-          username,
-          password
-        })
-        if(response.status==200){
-          toast.success(response.data.message)
-          await localStorage.setItem('accessToken', response.data.accessToken)
-          setLogin(false)
-          setLogged(true)
-        }
-      }catch(err:any){
-        console.error(err)
-        toast.error(err?.response?.data?.message)
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!username || !password) {
+      toast.error("Both username and password are required.");
+      return;
+    }
+
+    try {
+      const response = await axiosInstance.post('/login', {
+        username,
+        password
+      });
+
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        localStorage.setItem('accessToken', response.data.accessToken);
+        setLogin(false);
+        setLogged(true);
+      } else {
+        toast.error(response.data.message || "Login failed");
       }
-  }
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err?.response?.data?.message || "Something went wrong");
+    }
+  };
+
   return (
     <>
     <div className="h-screen w-screen fixed top-0 left-0 bg-[rgba(0,0,0,0.4)] backdrop-blur-sm flex items-center justify-center z-40 cursor-pointer" onClick={() => setLogin(false)}>
