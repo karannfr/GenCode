@@ -2,10 +2,72 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    
+    <!-- Title and SEO Description -->
+    <title>GenCode – AI-Powered Competitive Coding Practice</title>
+    <meta name="description" content="GenCode is your AI-powered platform for generating and solving competitive programming problems. Practice, code, and track your progress like never before.">
+
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="GenCode – AI-Powered Competitive Coding Platform" />
+    <meta property="og:description" content="Generate custom coding questions using AI and solve them in an interactive LeetCode-style editor. Practice smarter with GenCode." />
+    <meta property="og:image" content="https://gencode.karnx.dev/opengrph.png" />
+    <meta property="og:url" content="https://gencode.karnx.dev" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card Metadata -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="GenCode – AI-Powered Competitive Coding Platform" />
+    <meta name="twitter:description" content="Generate custom coding questions using AI and solve them interactively. Practice smarter with GenCode." />
+    <meta name="twitter:image" content="https://gencode.karnx.dev/opengrph.png" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://gencode.karnx.dev" />
+
+    <!-- JSON-LD Structured Data for FAQ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is GenCode?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "GenCode is a web platform that uses AI to generate competitive programming questions with test cases, solutions, and constraints. Users can solve them in a built-in code editor."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is GenCode free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, GenCode is free for users to generate questions and practice coding without any sign-up required."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What programming languages are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "GenCode supports coding in Java, Python, C, and C++."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I revisit old questions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, users can view all previously generated questions, track their status as solved or unsolved, and view statistics per language."
+          }
+        }
+      ]
+    }
+    </script>
   </head>
+
   <body class="bg-[#010314]">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

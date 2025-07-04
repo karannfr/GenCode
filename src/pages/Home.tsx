@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import LoginModal from "../components/LoginModal";
@@ -8,6 +8,10 @@ import StatusBar from "../components/Statusbar";
 import InputBar from "../components/inputBar";
 import { axiosPrivate } from "../api/axiosInstance";
 import logo from "../assets/GenCode.png"
+import { RiAiGenerate } from "react-icons/ri";
+import { FaPlay, FaRegSave, FaPython } from "react-icons/fa";
+import LoadingCircleSpinner from "../components/LoadingCircleSpinner";
+
 type HomeProps = {
   logged: boolean;
   setLogged: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,7 +21,7 @@ const Home = ({ logged, setLogged }: HomeProps) => {
   const [login, setLogin] = useState(false);
   const [signup, setSignUp] = useState(false);
   const [prompt, setPrompt] = useState("");
-  const [profile, setProfile] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const logout = async () => {
     try {
       const response = await axiosPrivate("/logout");
@@ -40,6 +44,7 @@ const Home = ({ logged, setLogged }: HomeProps) => {
 
   const generateQuestion = async () => {
     if (logged) {
+      setIsGenerating(true)
       if (!prompt.trim()) return;
       try {
         const response = await axiosPrivate.post("/generate", {
@@ -51,6 +56,7 @@ const Home = ({ logged, setLogged }: HomeProps) => {
         ) {
           toast.success("Question generated!");
           setPrompt("");
+          setIsGenerating(false)
           navigate(`/question/${response.data.id}`);
         }
       } catch (err: any) {
@@ -76,6 +82,7 @@ const Home = ({ logged, setLogged }: HomeProps) => {
       desc: "Store generated problems and come back later.",
     },
   ];
+
   return (
     <>
       {!logged ? (
@@ -99,7 +106,7 @@ const Home = ({ logged, setLogged }: HomeProps) => {
           <div className="absolute top-0 right-0 flex justify-center gap-4 mt-4 mr-4">
                 <div className="p-[1px] rounded-lg bg-gradient-to-r from-[#562EE7] to-[#FFC6E8] transition">
                   <button
-                    className="px-5 py-1.5 text-white text-sm sm:text-base bg-[#0E1116] rounded-lg hover:bg-[#181B22] transition-all duration-200"
+                    className="px-5 py-1.5 text-white text-sm sm:text-base bg-[#0E1116] rounded-lg hover:bg-[#181B22] transition-all duration-200 cursor-pointer"
                     onClick={() => setLogin(true)}
                   >
                     Login
@@ -107,7 +114,7 @@ const Home = ({ logged, setLogged }: HomeProps) => {
                 </div>
                 <div className="p-[1px] rounded-lg transition bg-gradient-to-r from-[#FFC6E8] to-[#562EE7]">
                   <button
-                    className="px-5 py-1.5 text-white text-sm sm:text-base bg-[#0E1116] rounded-lg hover:bg-[#181B22] transition-all duration-200"
+                    className="px-5 py-1.5 text-white text-sm sm:text-base bg-[#0E1116] rounded-lg hover:bg-[#181B22] transition-all duration-200 cursor-pointer"
                     onClick={() => setSignUp(true)}
                   >
                     Sign Up
@@ -144,9 +151,10 @@ const Home = ({ logged, setLogged }: HomeProps) => {
                   {features.map(({ title, desc }, i) => (
                     <div
                       key={i}
-                      className="bg-[#1F222B] rounded-xl px-4 py-5 text-center space-y-2 shadow-sm hover:shadow-md hover:bg-[#262a35] hover:-translate-y-[2px] transform transition duration-300"
+                      className="bg-[#1F222B] rounded-xl px-4 py-5 text-center space-y-2 shadow-sm hover:shadow-md hover:bg-[#262a35] hover:-translate-y-[2px] transform transition duration-300 flex flex-col items-center gap-4"
                     >
                       <h2 className="font-semibold text-sm">{title}</h2>
+                      {title == 'Generate Questions' ? <RiAiGenerate size={40}className="text-[#4a3aff]"/> : title == 'Run & Submit' ?<FaPlay size={36}className="text-[#4a3aff]"/> : <FaRegSave size={36}className="text-[#4a3aff]"/>}
                       <p className="text-gray-400 text-xs">{desc}</p>
                     </div>
                   ))}
@@ -187,18 +195,19 @@ const Home = ({ logged, setLogged }: HomeProps) => {
             </div>
             <div className="flex-4 flex flex-col py-[10vh] h-full w-full relative">
               <div className="absolute top-0 left-0">
-                <StatusBar totalGenerated={10} totalSolved={5} />
+                <StatusBar/>
               </div>
               <div className="absolute top-0 right-0">
                 <button
-                  className="text-white/90 text-sm px-4 py-2 rounded-lg border border-white/10 shadow-md hover:bg-[#181B22] transition"
+                  className="text-white/90 text-sm px-4 py-2 rounded-lg border border-white/10 shadow-md hover:bg-[#181B22] transition cursor-pointer"
                   onClick={logout}
                 >
                   Logout
                 </button>
               </div>
-
               <div className="flex justify-center items-center flex-grow text-white px-4">
+                {isGenerating ? 
+                <div className="relative z-10 w-full max-w-3xl bg-[#14161D] rounded-2xl p-36 sm:p-48 shadow-xl"><LoadingCircleSpinner/></div> :
                 <div className="relative z-10 w-full max-w-3xl bg-[#14161D] rounded-2xl p-6 sm:p-8 shadow-xl">
                   <div className="flex justify-center items-center mb-4">
                     <div className="h-15 w-40">
@@ -234,9 +243,10 @@ const Home = ({ logged, setLogged }: HomeProps) => {
                     ].map(({ title, desc }, i) => (
                       <div
                         key={i}
-                        className="flex-1 bg-[#1F222B] rounded-xl px-4 py-5 text-center space-y-2"
+                        className="flex-1 bg-[#1F222B] rounded-xl px-4 py-5 text-center space-y-2 flex flex-col items-center gap-4"
                       >
                         <h2 className="font-semibold">{title}</h2>
+                        {title == 'Multilingual Support' ? <FaPython size={40}className="text-[#4a3aff]"/> : title == 'Code Submission' ? <FaPlay size={36}className="text-[#4a3aff]"/> : <FaRegSave size={36}className="text-[#4a3aff]"/>}
                         <p className="text-gray-400 text-xs">{desc}</p>
                       </div>
                     ))}
@@ -247,8 +257,8 @@ const Home = ({ logged, setLogged }: HomeProps) => {
                     logged={logged}
                     generateQuestion={generateQuestion}
                     handleKeyDown={handleKeyDown}
-                  />
-                </div>
+                  /> 
+                </div>}
               </div>
             </div>
           </div>

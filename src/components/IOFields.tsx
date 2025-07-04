@@ -13,7 +13,7 @@ const IOFields = ({stdin,stdout,setStdin}: IOFieldsProps) => {
       stdoutRef.current.style.height = "auto";
       stdoutRef.current.style.height = stdoutRef.current.scrollHeight + "px";
     }
-  }, [stdout]); // Re-run this every time `stdout` changes
+  }, [stdout]);
   return (
     <div className="space-y-4">
       <div>

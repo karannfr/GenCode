@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3500';
+const baseURL = 'https://sheeran.karnx.dev';
 
 // Public instance
 const axiosInstance = axios.create({

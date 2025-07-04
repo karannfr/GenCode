@@ -27,15 +27,15 @@ type InputBarProps = {
       }}
         onKeyDown={handleKeyDown}
       />
-      <button
+        <button
         onClick={generateQuestion}
-        className={`absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 bg-[#7480FF] hover:bg-[#5f6aff] 
+        className={`cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 bg-[#7480FF] hover:bg-[#5f6aff] 
           text-white transition duration-200 ${
             !logged ? "rounded-lg" : "rounded-lg"
           }`}
       >
         ➜
-      </button>
+      </button> 
     </div>
   );
 

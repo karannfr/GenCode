@@ -74,7 +74,7 @@ const LoginModal = ({setLogin,setSignUp,setLogged} : LoginModalProps) => {
 
         <button
           type="submit"
-          className="mt-2 py-3 px-4 rounded-lg bg-[#4a3aff] hover:bg-[#372fff] transition text-white font-semibold"
+          className="mt-2 py-3 px-4 rounded-lg bg-[#4a3aff] hover:bg-[#372fff] transition text-white font-semibold cursor-pointer"
         >
           Login
         </button>
