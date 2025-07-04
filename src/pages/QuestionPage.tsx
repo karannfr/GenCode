@@ -137,7 +137,7 @@ const QuestionPage = () => {
     })
     setIsRunning(false)
     if(response.status == 200)
-      response.data.results.stdout ? setStdout(response.data.results.stdout) : setStdout(response.data.results.status)
+      response.data.results.stdout ? setStdout(response.data.results.stdout) : response.data.results.compile_output ? setStdout(`${response.data.results.status}\n${response.data.results.compile_output}`) : setStdout(`${response.data.results.status}\n${response.data.results.stderr}`)
     else
       toast.error(response.data.message)
   }catch(err : any){
