@@ -36,7 +36,7 @@ const filteredQuestions = allQuestions.filter((q) =>
         <div
           className={`${
             value.status==="solved" ? "bg-green-500" : "bg-red-500"
-          } rounded-[7.79px] w-full h-full`}
+          } rounded-[7.79px] w-full h-full cursor-pointer`}
         >
           <div className="bg-[#0E1116] rounded-[7.79px] w-[99%] h-full">
             <button className="bg-[rgba(116,128,255,0.2)] text-[#FFFFFF80] px-3 py-2 w-full h-full text-left rounded-[7.79px] hover:bg-[rgba(116,128,255,0.8)]" onClick={()=>{navigate(`/question/${value._id}`)}}>
